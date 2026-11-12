@@ -12,3 +12,16 @@ export interface TourPackage {
     is_active: boolean;
     created_at: string;
 }
+
+export interface Package {
+    id: number;
+    name_package: string;
+    slug: string;
+    location: string;
+    short_description: string;
+    duration_days: number;
+    duration_nights: number;
+    thumbnail: string | null;
+    is_active: boolean;
+    created_at: string;
+}

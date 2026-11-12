@@ -55,25 +55,25 @@ const stats = [
     name: 'Borobudur',
     location: 'Magelang, Jawa Tengah',
     visitors: '2.5M',
-    image: 'https://images.unsplash.com/photo-1615104168825-3d6391ccc228?q=80&w=870'
+    image: '/packages/borobudur2.jpg'
   },
   {
-    name: 'Bali',
-    location: 'Kepulauan Sunda Kecil',
+    name: 'Pura Ulun Danu',
+    location: 'ProvinsiBali',
     visitors: '6.3M',
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=870'
+    image: '/packages/bali.jpg'
   },
   {
     name: 'Bromo',
     location: 'Probolinggo, Jawa Timur',
     visitors: '1.2M',
-    image: 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?q=80&w=870'
+    image: '/packages/bromo.jpg'
   },
   {
     name: 'Raja Ampat',
     location: 'Papua Barat',
     visitors: '850K',
-    image: 'https://images.unsplash.com/photo-1590461478695-34e06f7af549?q=80&w=870'
+    image: '/packages/rajaampat.jpg'
   }
 ]
 </script>

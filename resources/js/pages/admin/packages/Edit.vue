@@ -29,7 +29,7 @@ const initialServiceIds = props.package.services
 
 const form = useForm({
     _method: 'PUT',
-    title: props.package.title,
+    title: props.package.name_package,
     location: props.package.location,
     short_description: props.package.short_description,
     price: props.package.price,
@@ -75,7 +75,7 @@ const submit = () => {
                 </Link>
                 <div>
                     <h2 class="text-xl font-bold tracking-tight">Edit Paket Wisata</h2>
-                    <p class="text-sm text-muted-foreground">Perbarui informasi paket tur {{ props.package.title }}</p>
+                    <p class="text-sm text-muted-foreground">Perbarui informasi paket tur {{ props.package.name_package }}</p>
                 </div>
             </div>
         </div>

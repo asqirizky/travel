@@ -1,75 +1,42 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { ArrowLeft, MapPin, Clock, Users, CheckCircle2, XCircle, Send, Sparkles } from '@lucide/vue';
+import { ArrowLeft, MapPin, Clock } from '@lucide/vue';
 
-interface Service {
+interface Package {
     id: number;
-    name: string;
-    type: 'include' | 'exclude';
-}
-
-interface TourPackage {
-    id: number;
-    title: string;
+    name_package: string;
     slug: string;
     location: string;
-    price: number;
+    short_description: string;
     duration_days: number;
     duration_nights: number;
-    max_capacity: number;
-    short_description: string;
-    description: string | null;
     thumbnail: string | null;
-    services?: Service[];
+    is_active: boolean;
+    created_at: string;
 }
 
 const props = defineProps<{
-    package: TourPackage;
+    package: Package;
     whatsappNumber: string;
 }>();
 
-// Filter Services
-const includedServices = computed(() => {
-    return props.package.services?.filter((s) => s.type === 'include') || [];
-});
-
-const excludedServices = computed(() => {
-    return props.package.services?.filter((s) => s.type === 'exclude') || [];
-});
-
-// Form Pemesanan Sederhana
 const customerName = ref('');
 const travelDate = ref('');
 const participantCount = ref(1);
 
-const totalPrice = computed(() => {
-    return props.package.price * participantCount.value;
-});
-
-const formatRupiah = (val: number) => {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        maximumFractionDigits: 0,
-    }).format(val);
-};
-
-// Generate Link WhatsApp dengan Pesan Terformat
 const sendToWhatsApp = () => {
     if (!customerName.value || !travelDate.value) {
         alert('Mohon isi nama dan tanggal keberangkatan.');
         return;
     }
 
-    const message = 
-`Halo Admin, saya ingin memesan paket wisata berikut:
+    const message = `Halo Admin, saya ingin memesan paket wisata berikut:
 
-📌 *Paket:* ${props.package.title}
+📌 *Paket:* ${props.package.name_package}
 📍 *Lokasi:* ${props.package.location}
 🗓️ *Tgl Keberangkatan:* ${travelDate.value}
 👤 *Jumlah Peserta:* ${participantCount.value} Orang
-💰 *Total Estimasi:* ${formatRupiah(totalPrice.value)}
 
 *Data Pemesan:*
 • *Nama:* ${customerName.value}
@@ -83,202 +50,134 @@ Mohon informasi ketersediaan slot dan langkah pembayaran selanjutnya. Terima kas
 </script>
 
 <template>
-    <Head :title="`${package.title} - Detail Paket`" />
+    <Head :title="`${package.name_package} - Detail Paket`" />
 
-    <div class="min-h-screen bg-slate-950 text-slate-100 pb-20 pt-20">
-        <!-- Top Navigation Bar (Fixed / Clean Header) -->
-        <div class="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md px-6 py-4">
-            <div class="max-w-6xl mx-auto flex items-center justify-between">
-                <Link 
-                    href="/home" 
-                    class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-medium text-slate-300 hover:text-white hover:border-slate-700 transition-all"
+    <div class="min-h-screen bg-slate-950 text-slate-100">
+        <!-- Hero Banner Full Width -->
+        <div class="relative h-[80vh] min-h-[560px] w-full overflow-hidden">
+            <img
+                :src="
+                    package.thumbnail ||
+                    'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?w=1400&q=80'
+                "
+                :alt="package.name_package"
+                class="absolute inset-0 h-full w-full object-cover"
+            />
+            <div
+                class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-slate-950"
+            ></div>
+            <div
+                class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent"
+            ></div>
+
+            <!-- Top Nav (overlaid, below navbar) -->
+            <div class="absolute top-[86px] right-0 left-0 z-50 px-6">
+                <div
+                    class="mx-auto flex max-w-6xl items-center justify-between"
                 >
-                    <ArrowLeft class="w-3.5 h-3.5" /> Kembali ke Katalog
-                </Link>
-                <div class="text-xs font-semibold text-violet-400 bg-violet-500/10 px-3 py-1 rounded-full border border-violet-500/20">
-                    {{ package.location }}
+                    <Link
+                        href="/"
+                        class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-md transition-all hover:bg-white/20"
+                    >
+                        <ArrowLeft class="h-3.5 w-3.5" /> Back
+                    </Link>
                 </div>
             </div>
-        </div>
 
-        <!-- Hero Banner Header -->
-        <div class="relative h-[45vh] min-h-[350px] w-full bg-slate-900 overflow-hidden">
-            <img 
-                :src="package.thumbnail || 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?w=1200&q=80'" 
-                :alt="package.title"
-                class="h-full w-full object-cover opacity-90"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent"></div>
-
-            <div class="absolute bottom-8 left-0 right-0 max-w-6xl mx-auto px-6">
-                <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-2">
-                    {{ package.title }}
-                </h1>
-                <p class="text-slate-400 text-sm md:text-base flex items-center gap-2">
-                    <MapPin class="w-4 h-4 text-violet-400" /> {{ package.location }}
-                </p>
+            <!-- Title & Info at Bottom -->
+            <div class="absolute right-0 bottom-0 left-0 z-10">
+                <div class="mx-auto max-w-6xl px-6 pb-12">
+                    <div class="mb-4 flex items-center gap-2">
+                        <span
+                            class="rounded-full border border-violet-400/20 bg-violet-500/15 px-3 py-1 text-[11px] font-bold tracking-[3px] text-violet-300 uppercase backdrop-blur-md"
+                        >
+                            {{ package.location }}
+                        </span>
+                        <span
+                            class="rounded-full border border-emerald-400/20 bg-emerald-500/15 px-3 py-1 text-[11px] font-bold tracking-[3px] text-emerald-300 uppercase backdrop-blur-md"
+                        >
+                            {{ package.duration_days }} Day /
+                            {{ package.duration_nights }} Night
+                        </span>
+                    </div>
+                    <h1
+                        class="text-3xl leading-[1.1] font-extrabold tracking-tight text-white md:text-4xl"
+                    >
+                        {{ package.name_package }}
+                    </h1>
+                </div>
+                <div
+                    class="h-24 bg-gradient-to-t from-slate-950 to-transparent"
+                ></div>
             </div>
         </div>
 
-        <!-- Main Content Section -->
-        <div class="max-w-6xl mx-auto px-6 mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Left Column: Detail Information -->
-            <div class="lg:col-span-2 space-y-8">
-                <!-- Highlight Badges -->
-                <div class="grid grid-cols-3 gap-4 p-4 rounded-2xl bg-slate-900/60 border border-slate-800/80 backdrop-blur">
-                    <div class="flex items-center gap-3 p-2">
-                        <div class="p-2.5 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                            <Clock class="w-5 h-5" />
+        <!-- Main Content -->
+        <div
+            class="relative z-20 mx-auto -mt-6 grid max-w-6xl grid-cols-1 gap-8 px-6 pb-24 lg:grid-cols-3"
+        >
+            <!-- Left Column -->
+            <div class="space-y-8 lg:col-span-3">
+                <!-- Highlight Stats -->
+                <div
+                    class="mx-auto max-w-5xl w-full grid grid-cols-2 gap-6 rounded-2xl border border-slate-800/80 bg-slate-900/80 p-6 backdrop-blur-sm"
+                >
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="rounded-xl border border-violet-500/20 bg-violet-500/10 p-2.5 text-violet-400"
+                        >
+                            <Clock class="h-5 w-5" />
                         </div>
                         <div>
-                            <p class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Durasi</p>
-                            <p class="text-xs md:text-sm font-semibold text-slate-200">
-                                {{ package.duration_days }}H {{ package.duration_nights }}M
+                            <p
+                                class="text-[10px] font-semibold tracking-wider text-slate-500 uppercase"
+                            >
+                                Duration
+                            </p>
+                            <p class="text-sm font-bold text-slate-100 leading-none">
+                                {{ package.duration_days }} Day /
+                                {{ package.duration_nights }} Night
                             </p>
                         </div>
                     </div>
-
-                    <div class="flex items-center gap-3 p-2 border-x border-slate-800/80">
-                        <div class="p-2.5 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                            <Users class="w-5 h-5" />
+                    <div
+                        class="flex items-center gap-3 border-l border-slate-800/80 pl-4"
+                    >
+                        <div
+                            class="rounded-xl border border-violet-500/20 bg-violet-500/10 p-2.5 text-violet-400"
+                        >
+                            <MapPin class="h-5 w-5" />
                         </div>
                         <div>
-                            <p class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Kapasitas</p>
-                            <p class="text-xs md:text-sm font-semibold text-slate-200">
-                                Max {{ package.max_capacity }} Orang
+                            <p
+                                class="text-[10px] font-semibold tracking-wider text-slate-500 uppercase"
+                            >
+                                Destination
                             </p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-3 p-2">
-                        <div class="p-2.5 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                            <MapPin class="w-5 h-5" />
-                        </div>
-                        <div>
-                            <p class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Destinasi</p>
-                            <p class="text-xs md:text-sm font-semibold text-slate-200 truncate">
+                            <p
+                                class="truncate text-sm font-bold text-slate-100"
+                            >
                                 {{ package.location }}
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Ringkasan Paket -->
-                <div class="space-y-3">
-                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                        <Sparkles class="w-4 h-4 text-violet-400" /> Ringkasan Paket
-                    </h3>
-                    <p class="text-slate-300 leading-relaxed text-sm whitespace-pre-line bg-slate-900/40 p-5 rounded-2xl border border-slate-800/50">
+                <!-- Ringkasan -->
+                <div class="mx-auto max-w-5xl w-full space-y-4 text-start">
+                    <div class="flex items-start justify-start gap-2">
+                        <div class="h-8 w-8 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Package Summary</h3>
+                    </div>
+                    <p
+                        class="rounded-2xl border border-slate-800/50 bg-slate-900/40 p-8 text-[15px] leading-relaxed whitespace-pre-line text-slate-300/90 w-full"
+                    >
                         {{ package.short_description }}
                     </p>
-                </div>
-
-                <!-- Deskripsi Lengkap (jika ada) -->
-                <div v-if="package.description" class="space-y-3">
-                    <h3 class="text-lg font-bold text-white">Detail Perjalanan</h3>
-                    <div class="text-slate-300 leading-relaxed text-sm whitespace-pre-line bg-slate-900/40 p-5 rounded-2xl border border-slate-800/50">
-                        {{ package.description }}
-                    </div>
-                </div>
-
-                <!-- Dynamic Included & Excluded Services -->
-                <div class="space-y-6 pt-4 border-t border-slate-800/80">
-                    <h3 class="text-lg font-bold text-white">Fasilitas & Layanan</h3>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Included -->
-                        <div class="space-y-3">
-                            <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Termasuk (Included)</h4>
-                            <div v-if="includedServices.length > 0" class="space-y-2">
-                                <div 
-                                    v-for="service in includedServices" 
-                                    :key="service.id" 
-                                    class="flex items-center gap-2.5 text-slate-300 text-sm bg-slate-900/60 p-3 rounded-xl border border-emerald-500/10"
-                                >
-                                    <CheckCircle2 class="w-4 h-4 text-emerald-400 shrink-0" />
-                                    <span>{{ service.name }}</span>
-                                </div>
-                            </div>
-                            <p v-else class="text-xs text-slate-500 italic">Tidak ada rincian fasilitas include.</p>
-                        </div>
-
-                        <!-- Excluded -->
-                        <div class="space-y-3">
-                            <h4 class="text-xs font-bold uppercase tracking-wider text-rose-400">Tidak Termasuk (Excluded)</h4>
-                            <div v-if="excludedServices.length > 0" class="space-y-2">
-                                <div 
-                                    v-for="service in excludedServices" 
-                                    :key="service.id" 
-                                    class="flex items-center gap-2.5 text-slate-400 text-sm bg-slate-900/30 p-3 rounded-xl border border-rose-500/10"
-                                >
-                                    <XCircle class="w-4 h-4 text-rose-400 shrink-0" />
-                                    <span>{{ service.name }}</span>
-                                </div>
-                            </div>
-                            <p v-else class="text-xs text-slate-500 italic">Tidak ada rincian fasilitas excluded.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Column: Form Pemesanan WhatsApp -->
-            <div class="lg:col-span-1">
-                <div class="sticky top-24 p-6 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-6 shadow-2xl backdrop-blur">
-                    <div class="border-b border-slate-800/80 pb-4">
-                        <span class="text-xs text-slate-400 font-medium">Harga per pax</span>
-                        <div class="text-3xl font-extrabold text-violet-400 mt-1">
-                            {{ formatRupiah(package.price) }}
-                        </div>
-                    </div>
-
-                    <form @submit.prevent="sendToWhatsApp" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Nama Pemesan</label>
-                            <input 
-                                type="text" 
-                                v-model="customerName"
-                                placeholder="Masukkan nama lengkap" 
-                                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-violet-500 transition-colors"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Tanggal Keberangkatan</label>
-                            <input 
-                                type="date" 
-                                v-model="travelDate"
-                                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-violet-500 transition-colors"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Jumlah Peserta (Orang)</label>
-                            <input 
-                                type="number" 
-                                v-model="participantCount"
-                                min="1" 
-                                :max="package.max_capacity"
-                                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-100 focus:outline-none focus:border-violet-500 transition-colors"
-                                required
-                            />
-                        </div>
-
-                        <div class="pt-4 border-t border-slate-800/80 space-y-4">
-                            <div class="flex justify-between items-center">
-                                <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Total Estimasi</span>
-                                <span class="text-violet-300 text-xl font-bold">{{ formatRupiah(totalPrice) }}</span>
-                            </div>
-
-                            <button 
-                                type="submit" 
-                                class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-950/50 active:scale-[0.98]"
-                            >
-                                <Send class="w-4 h-4" /> Pesan via WhatsApp
-                            </button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>

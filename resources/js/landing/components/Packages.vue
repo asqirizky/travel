@@ -1,8 +1,8 @@
 <template>
   <section class="pricing">
     <div class="container">
-      <h2 class="section-title">Tour Package</h2>
-      <p class="section-subtitle">Choose your dream destination at the best price</p>
+      <h2 class="section-title">Start Your Journey</h2>
+      <p class="section-subtitle">Choose your dream destination</p>
 
       <div class="wrapper">
         <!-- Button Prev -->
@@ -24,19 +24,19 @@
               
               <!-- Badge Durasi -->
               <div class="card-badge">
-                {{ item.duration_days }}H {{ item.duration_nights }}M
+                {{ item.duration_days }}D {{ item.duration_nights }}N
               </div>
 
               <!-- Badge Harga Format Rupiah -->
-              <div class="card-price">
+              <!-- <div class="card-price">
                 <span class="amount">{{ formatRupiah(item.price) }}</span>
-              </div>
+              </div> -->
             </div>
 
             <!-- Body Card -->
             <div class="card-body">
               <div class="card-location">{{ item.location }}</div>
-              <h3 class="card-title">{{ item.title }}</h3>
+              <h3 class="card-title">{{ item.name_package }}</h3>
               <p class="card-desc">{{ item.short_description }}</p>
 
               <!-- Meta Icons (Durasi & Kapasitas) -->
@@ -46,16 +46,7 @@
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                   </svg>
-                  {{ item.duration_days }} Hari {{ item.duration_nights }} Malam
-                </span>
-                <span class="meta-item">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                  </svg>
-                  Max {{ item.max_capacity }} Orang
+                  {{ item.duration_days }} Days {{ item.duration_nights }} Nights
                 </span>
               </div>
 
@@ -76,7 +67,7 @@
 
       <!-- State Jika Data Kosong -->
       <div v-if="!packages || packages.length === 0" class="py-12 text-center text-slate-500">
-        Belum ada paket wisata yang aktif saat ini.
+        There are currently no active tour packages.
       </div>
     </div>
   </section>
@@ -84,11 +75,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import type { TourPackage } from "@/types";
+import type { Package } from "@/types";
 
 withDefaults(
   defineProps<{
-    packages?: TourPackage[];
+    packages?: Package[];
   }>(),
   {
     packages: () => [],

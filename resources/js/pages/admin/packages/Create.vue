@@ -57,8 +57,8 @@ const submit = () => {
                     <ArrowLeft class="h-4 w-4" />
                 </Link>
                 <div>
-                    <h2 class="text-xl font-bold tracking-tight">Tambah Paket Wisata</h2>
-                    <p class="text-sm text-muted-foreground">Buat paket tur baru untuk ditampilkan ke pelanggan</p>
+                    <h2 class="text-xl font-bold tracking-tight">Create Package</h2>
+                    <p class="text-sm text-muted-foreground">Create a new tour package to display to customers</p>
                 </div>
             </div>
         </div>
@@ -66,7 +66,7 @@ const submit = () => {
         <form @submit.prevent="submit" class="space-y-6 rounded-lg border bg-card p-6 shadow-sm">
             <!-- Thumbnail Upload -->
             <div class="space-y-2">
-                <label class="text-sm font-medium leading-none">Foto Thumbnail</label>
+                <label class="text-sm font-medium leading-none">Thumbnail Image</label>
                 
                 <div v-if="previewUrl" class="relative w-full max-w-xs overflow-hidden rounded-md border border-input">
                     <img :src="previewUrl" alt="Preview" class="h-40 w-full object-cover" />
@@ -87,7 +87,7 @@ const submit = () => {
                     >
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                             <Upload class="w-8 h-8 mb-2 text-muted-foreground" />
-                            <p class="mb-1 text-sm text-muted-foreground"><span class="font-semibold">Klik untuk upload</span> atau drag & drop</p>
+                            <p class="mb-1 text-sm text-muted-foreground"><span class="font-semibold">Click to upload</span> or drag & drop</p>
                             <p class="text-xs text-muted-foreground">PNG, JPG, WEBP (Max. 2MB)</p>
                         </div>
                         <input
@@ -104,12 +104,12 @@ const submit = () => {
 
             <!-- Title -->
             <div class="space-y-2">
-                <label for="title" class="text-sm font-medium leading-none">Nama Paket</label>
+                <label for="title" class="text-sm font-medium leading-none">Package Name</label>
                 <input
                     id="title"
                     type="text"
                     v-model="form.title"
-                    placeholder="Contoh: Bromo Adventure"
+                    placeholder="Example: bali-ijen-bromo"
                     class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     :class="{ 'border-destructive': form.errors.title }"
                 />
@@ -119,36 +119,23 @@ const submit = () => {
             <!-- Location & Price -->
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div class="space-y-2">
-                    <label for="location" class="text-sm font-medium leading-none">Lokasi Destinasi</label>
+                    <label for="location" class="text-sm font-medium leading-none">Location</label>
                     <input
                         id="location"
                         type="text"
                         v-model="form.location"
-                        placeholder="Contoh: Jawa Timur"
+                        placeholder="Example: East Java"
                         class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                         :class="{ 'border-destructive': form.errors.location }"
                     />
                     <span v-if="form.errors.location" class="text-xs text-destructive">{{ form.errors.location }}</span>
-                </div>
-
-                <div class="space-y-2">
-                    <label for="price" class="text-sm font-medium leading-none">Harga (IDR)</label>
-                    <input
-                        id="price"
-                        type="number"
-                        v-model="form.price"
-                        placeholder="990000"
-                        class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                        :class="{ 'border-destructive': form.errors.price }"
-                    />
-                    <span v-if="form.errors.price" class="text-xs text-destructive">{{ form.errors.price }}</span>
                 </div>
             </div>
 
             <!-- Duration & Capacity -->
             <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div class="space-y-2">
-                    <label for="duration_days" class="text-sm font-medium leading-none">Durasi (Hari)</label>
+                    <label for="duration_days" class="text-sm font-medium leading-none">Duration (Days)</label>
                     <input
                         id="duration_days"
                         type="number"
@@ -159,7 +146,7 @@ const submit = () => {
                 </div>
 
                 <div class="space-y-2">
-                    <label for="duration_nights" class="text-sm font-medium leading-none">Durasi (Malam)</label>
+                    <label for="duration_nights" class="text-sm font-medium leading-none">Duration (Nights)</label>
                     <input
                         id="duration_nights"
                         type="number"
@@ -169,21 +156,11 @@ const submit = () => {
                     />
                 </div>
 
-                <div class="space-y-2">
-                    <label for="max_capacity" class="text-sm font-medium leading-none">Kapasitas Maksimal (Orang)</label>
-                    <input
-                        id="max_capacity"
-                        type="number"
-                        v-model="form.max_capacity"
-                        min="1"
-                        class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                    />
-                </div>
             </div>
 
             <!-- Tambahkan Pilihan Checkbox Service di Form -->
             <div class="space-y-3 border-t pt-4">
-                <label class="text-sm font-medium leading-none">Fasilitas & Service Paket</label>
+                <label class="text-sm font-medium leading-none">Facilities & Package Services</label>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div 
@@ -214,12 +191,12 @@ const submit = () => {
 
             <!-- Description -->
             <div class="space-y-2">
-                <label for="short_description" class="text-sm font-medium leading-none">Deskripsi Singkat</label>
+                <label for="short_description" class="text-sm font-medium leading-none">Short Description</label>
                 <textarea
                     id="short_description"
                     v-model="form.short_description"
                     rows="3"
-                    placeholder="Saksikan matahari terbit ikonik di Gunung Bromo dan jelajahi lautan pasir."
+                    placeholder="Witness the iconic sunrise at Mount Bromo and explore the sea of sand."
                     class="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                     :class="{ 'border-destructive': form.errors.short_description }"
                 ></textarea>

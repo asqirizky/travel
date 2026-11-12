@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import Footer from '@/landing/components/Footer.vue';
 import Navbar from '@/landing/components/Navbar.vue';
+import { useSweetAlert } from '@/sweet-alert/useSweetAlert';
+
+useSweetAlert();
 </script>
 
 <template>

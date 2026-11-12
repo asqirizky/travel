@@ -22,28 +22,20 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { index, create, edit, destroy } from '@/routes/admin/packages';
-import type { TourPackage } from '@/types';
+import type { Package } from '@/types';
 
 type Props = {
-    packages: TourPackage[];
+    packages: Package[];
 };
 
 defineProps<Props>();
 
 const deleteDialogOpen = ref(false);
-const packageToDelete = ref<TourPackage | null>(null);
+const packageToDelete = ref<Package | null>(null);
 
-const confirmDelete = (pkg: TourPackage) => {
+const confirmDelete = (pkg: Package) => {
     packageToDelete.value = pkg;
     deleteDialogOpen.value = true;
-};
-
-const formatRupiah = (val: number) => {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        maximumFractionDigits: 0,
-    }).format(val);
 };
 
 defineOptions({
@@ -89,7 +81,7 @@ defineOptions({
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="font-medium text-base">{{ item.title }}</span>
+                            <span class="font-medium text-base">{{ item.name_package }}</span>
                             <Badge :variant="item.is_active ? 'default' : 'secondary'">
                                 {{ item.is_active ? 'Aktif' : 'Draft' }}
                             </Badge>
@@ -97,10 +89,6 @@ defineOptions({
                         <div class="flex items-center gap-3 text-xs text-muted-foreground mt-1">
                             <span class="flex items-center gap-1"><MapPin class="h-3 w-3" /> {{ item.location }}</span>
                             <span class="flex items-center gap-1"><Clock class="h-3 w-3" /> {{ item.duration_days }}H {{ item.duration_nights }}M</span>
-                            <span class="flex items-center gap-1"><Users class="h-3 w-3" /> Max {{ item.max_capacity }} pax</span>
-                        </div>
-                        <div class="mt-1 font-semibold text-sm text-primary">
-                            {{ formatRupiah(item.price) }}
                         </div>
                     </div>
                 </div>
@@ -157,7 +145,7 @@ defineOptions({
                 <DialogHeader>
                     <DialogTitle>Hapus Paket Wisata</DialogTitle>
                     <DialogDescription>
-                        Apakah Anda yakin ingin menghapus paket "{{ packageToDelete.title }}"? Tindakan ini tidak dapat dibatalkan.
+                        Apakah Anda yakin ingin menghapus paket "{{ packageToDelete.name_package }}"? Tindakan ini tidak dapat dibatalkan.
                     </DialogDescription>
                 </DialogHeader>
 
