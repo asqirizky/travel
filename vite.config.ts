@@ -23,7 +23,15 @@ function resolveWayfinderCommand(): string {
 
         return 'php artisan wayfinder:generate';
     } catch {
-        return 'docker compose exec -T app php artisan wayfinder:generate';
+        try {
+            execSync('docker compose exec -T app php artisan wayfinder:generate --with-form', {
+                stdio: 'ignore',
+            });
+
+            return 'docker compose exec -T app php artisan wayfinder:generate --with-form';
+        } catch {
+            return 'true';
+        }
     }
 }
 
