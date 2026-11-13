@@ -76,75 +76,14 @@ const services = [
     </div>
 
     <div class="services-grid">
-      <article
-        v-for="(item, index) in services"
-        :key="index"
-        class="service-card"
-      >
-        <svg
-          class="card-waves"
-          viewBox="0 0 360 220"
-          preserveAspectRatio="none"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient :id="`wave-fill-${index}`" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.3" />
-              <stop offset="100%" stop-color="#818cf8" stop-opacity="0.04" />
-            </linearGradient>
-            <linearGradient :id="`wave-stroke-${index}`" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.05" />
-              <stop offset="50%" stop-color="#c4b5fd" stop-opacity="0.75" />
-              <stop offset="100%" stop-color="#818cf8" stop-opacity="0.1" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M0,110 C60,78 112,148 180,118 C248,88 302,142 360,108 L360,220 L0,220 Z"
-            :fill="`url(#wave-fill-${index})`"
-          />
-          <path
-            d="M0,140 C70,100 122,176 190,146 C258,116 312,166 360,134"
-            fill="none"
-            :stroke="`url(#wave-stroke-${index})`"
-            stroke-width="1.5"
-          />
-          <path
-            d="M0,172 C80,136 132,202 200,172 C268,142 322,192 360,166"
-            fill="none"
-            :stroke="`url(#wave-stroke-${index})`"
-            stroke-width="1"
-            opacity="0.55"
-          />
-        </svg>
-
+      <article v-for="(item, index) in services" :key="index" class="service-card">
         <div class="card-icon-wrap">
           <span class="card-icon">{{ item.icon }}</span>
         </div>
 
         <h3 class="service-card-title">{{ item.title }}</h3>
 
-        <div class="service-card-copy">
-          <svg
-            class="copy-wave"
-            viewBox="0 0 300 120"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <defs>
-              <linearGradient :id="`copy-fill-${index}`" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.18" />
-                <stop offset="100%" stop-color="#818cf8" stop-opacity="0.06" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M16,14 C48,2 90,22 140,10 C190,-2 250,6 286,16 C296,44 292,82 284,104 C250,116 200,100 150,112 C100,124 44,116 16,104 C6,78 6,40 16,14 Z"
-              :fill="`url(#copy-fill-${index})`"
-              stroke="rgba(196, 181, 253, 0.28)"
-              stroke-width="1"
-            />
-          </svg>
-          <p class="service-card-desc">{{ item.description }}</p>
-        </div>
+        <p class="service-card-desc">{{ item.description }}</p>
       </article>
     </div>
   </section>
@@ -240,109 +179,49 @@ const services = [
 
 .service-card {
   position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  min-height: 330px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 34px 24px 26px;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: linear-gradient(145deg, rgba(30, 30, 35, 0.9), rgba(22, 22, 28, 0.95));
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-}
-
-.service-card::before {
-  content: '';
-  position: absolute;
-  top: -70px;
-  left: 50%;
-  width: 220px;
-  height: 160px;
-  margin-left: -110px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(167, 139, 250, 0.22) 0%, rgba(167, 139, 250, 0) 70%);
-  pointer-events: none;
+  padding: 30px 24px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 
 .service-card:hover {
-  border-color: rgba(167, 139, 250, 0.3);
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba(167, 139, 250, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transform: translateY(-6px);
-}
-
-.card-waves {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 58%;
-  z-index: 0;
-  pointer-events: none;
+  border-color: rgba(167, 139, 250, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-4px);
 }
 
 .card-icon-wrap {
-  position: relative;
-  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 74px;
-  height: 74px;
-  margin: 0 auto 20px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 18px;
   border-radius: 50%;
-  border: 1px solid rgba(196, 181, 253, 0.4);
-  background: linear-gradient(140deg, rgba(167, 139, 250, 0.24) 0%, rgba(129, 140, 248, 0.16) 100%);
-  box-shadow:
-    0 0 0 7px rgba(167, 139, 250, 0.06),
-    0 14px 28px -14px rgba(167, 139, 250, 0.75);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  background: rgba(167, 139, 250, 0.1);
 }
 
 .card-icon {
-  font-size: 2rem;
+  font-size: 1.75rem;
   line-height: 1;
 }
 
 .service-card-title {
-  position: relative;
-  z-index: 1;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #ffffff;
-  margin: 0 0 16px;
+  margin: 0 0 10px;
   letter-spacing: -0.01em;
 }
 
-.service-card-copy {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  margin-top: auto;
-  padding: 16px 18px;
-}
-
-.copy-wave {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
 .service-card-desc {
-  position: relative;
-  z-index: 1;
   font-size: 0.88rem;
   color: #a1a1aa;
   line-height: 1.65;

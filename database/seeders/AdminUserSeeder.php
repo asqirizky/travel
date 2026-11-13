@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User as ModelsUser;
-use Illuminate\Database\Seeder;
-use Illuminate\App\Models\User; // Sesuaikan namespace model User kamu
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
 {
@@ -15,12 +14,13 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        ModelsUser::create([
+        User::create([
             'name' => 'Administrator',
+            'username' => 'admin',
             'email' => 'admin@gmail.com',
             'email_verified_at' => Carbon::now(),
-            'password' => Hash::make('password123'), // Ganti password sesuai keinginan
-            'role' => 'admin'
+            'password' => Hash::make('admin123'),
+            'role' => 'admin',
         ]);
     }
 }
