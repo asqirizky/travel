@@ -5,10 +5,11 @@ import LandingHero from '@/landing/components/Landing.vue';
 import Packages from '@/landing/components/Packages.vue';
 import Testimonial from '@/landing/components/Testimonial.vue';
 import WhyTravelWithUs from '@/landing/components/WhyTravelWithUs.vue';
-import type { Package } from '@/types';
+import type { Destination, Package } from '@/types';
 
 defineProps<{
     packages: Package[];
+    destinations: Destination[];
 }>();
 </script>
 
@@ -16,7 +17,7 @@ defineProps<{
     <Head title="Indonesia Culture Trip" />
 
     <LandingHero />
-    <Destinations />
+    <Destinations :destinations="destinations" />
     <WhyTravelWithUs />
     <Packages :packages="packages" />
     <Testimonial />

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DestinationController as AdminDestinationController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\TourPackageController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +16,7 @@ Route::inertia('/about', 'public/About')->name('about');
 Route::inertia('/service', 'public/Service')->name('service');
 Route::inertia('/contact', 'public/Contact')->name('contact');
 Route::get('/packages/{slug}', [TourPackageController::class, 'show'])->name('packages.show');
+Route::get('/destinations/{destination:slug}', [DestinationController::class, 'show'])->name('destinations.show');
 
 
 Route::get('/contact/login', function () {
@@ -38,6 +41,7 @@ Route::middleware(['auth', 'verified', 'role:admin,operator'])
         Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
         Route::resource('/packages', TourPackageController::class);
+        Route::resource('/destinations', AdminDestinationController::class)->except('show');
     });
 
 require __DIR__.'/settings.php';

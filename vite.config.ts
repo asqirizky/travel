@@ -168,6 +168,11 @@ export default defineConfig({
     },
     build: {
         target: 'firefox89',
+        rolldownOptions: {
+            checks: {
+                invalidAnnotation: false,
+            },
+        },
     },
 
     plugins: [
