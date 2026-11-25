@@ -66,7 +66,7 @@ onUnmounted(() => {
   position: relative;
   padding: 120px 20px;
   overflow: hidden;
-  min-height: 100vh;
+  min-height: 60vh;
   display: flex;
   align-items: center;
 }

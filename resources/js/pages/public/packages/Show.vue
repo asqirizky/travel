@@ -1,57 +1,29 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { ArrowLeft, MapPin, Clock, Users, CheckCircle2, XCircle, Send, Sparkles, CalendarDays, UserRound } from '@lucide/vue';
+import { ArrowLeft, MapPin, Clock } from '@lucide/vue';
 
-interface Service {
+interface Package {
     id: number;
-    name: string;
-    type: 'include' | 'exclude';
-}
-
-interface TourPackage {
-    id: number;
-    title: string;
+    name_package: string;
     slug: string;
     location: string;
-    price: number;
+    short_description: string;
     duration_days: number;
     duration_nights: number;
-    max_capacity: number;
-    short_description: string;
-    description: string | null;
     thumbnail: string | null;
-    services?: Service[];
+    is_active: boolean;
+    created_at: string;
 }
 
 const props = defineProps<{
-    package: TourPackage;
+    package: Package;
     whatsappNumber: string;
 }>();
-
-const includedServices = computed(() => {
-    return props.package.services?.filter((s) => s.type === 'include') || [];
-});
-
-const excludedServices = computed(() => {
-    return props.package.services?.filter((s) => s.type === 'exclude') || [];
-});
 
 const customerName = ref('');
 const travelDate = ref('');
 const participantCount = ref(1);
-
-const totalPrice = computed(() => {
-    return props.package.price * participantCount.value;
-});
-
-const formatRupiah = (val: number) => {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        maximumFractionDigits: 0,
-    }).format(val);
-};
 
 const sendToWhatsApp = () => {
     if (!customerName.value || !travelDate.value) {
@@ -59,14 +31,12 @@ const sendToWhatsApp = () => {
         return;
     }
 
-    const message =
-`Halo Admin, saya ingin memesan paket wisata berikut:
+    const message = `Halo Admin, saya ingin memesan paket wisata berikut:
 
-📌 *Paket:* ${props.package.title}
+📌 *Paket:* ${props.package.name_package}
 📍 *Lokasi:* ${props.package.location}
 🗓️ *Tgl Keberangkatan:* ${travelDate.value}
 👤 *Jumlah Peserta:* ${participantCount.value} Orang
-💰 *Total Estimasi:* ${formatRupiah(totalPrice.value)}
 
 *Data Pemesan:*
 • *Nama:* ${customerName.value}
@@ -80,136 +50,134 @@ Mohon informasi ketersediaan slot dan langkah pembayaran selanjutnya. Terima kas
 </script>
 
 <template>
-    <Head :title="`${package.title} - Detail Paket`" />
+    <Head :title="`${package.name_package} - Detail Paket`" />
 
     <div class="min-h-screen bg-slate-950 text-slate-100">
         <!-- Hero Banner Full Width -->
         <div class="relative h-[80vh] min-h-[560px] w-full overflow-hidden">
             <img
-                :src="package.thumbnail || 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?w=1400&q=80'"
-                :alt="package.title"
+                :src="
+                    package.thumbnail ||
+                    'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?w=1400&q=80'
+                "
+                :alt="package.name_package"
                 class="absolute inset-0 h-full w-full object-cover"
             />
-            <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-slate-950"></div>
-            <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent"></div>
+            <div
+                class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-slate-950"
+            ></div>
+            <div
+                class="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent"
+            ></div>
 
             <!-- Top Nav (overlaid, below navbar) -->
-            <div class="absolute top-[86px] left-0 right-0 z-50 px-6">
-                <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="absolute top-[86px] right-0 left-0 z-50 px-6">
+                <div
+                    class="mx-auto flex max-w-6xl items-center justify-between"
+                >
                     <Link
                         href="/"
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 text-xs font-medium text-white backdrop-blur-md hover:bg-white/20 transition-all"
+                        class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-medium text-white backdrop-blur-md transition-all hover:bg-white/20"
                     >
-                        <ArrowLeft class="w-3.5 h-3.5" /> Kembali
+                        <ArrowLeft class="h-3.5 w-3.5" /> Back
                     </Link>
                 </div>
             </div>
 
             <!-- Title & Info at Bottom -->
-            <div class="absolute bottom-0 left-0 right-0 z-10">
-                <div class="max-w-6xl mx-auto px-6 pb-12">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="text-[11px] font-bold uppercase tracking-[3px] text-violet-300 bg-violet-500/15 px-3 py-1 rounded-full border border-violet-400/20 backdrop-blur-md">
+            <div class="absolute right-0 bottom-0 left-0 z-10">
+                <div class="mx-auto max-w-6xl px-6 pb-12">
+                    <div class="mb-4 flex items-center gap-2">
+                        <span
+                            class="rounded-full border border-violet-400/20 bg-violet-500/15 px-3 py-1 text-[11px] font-bold tracking-[3px] text-violet-300 uppercase backdrop-blur-md"
+                        >
                             {{ package.location }}
                         </span>
-                        <span class="text-[11px] font-bold uppercase tracking-[3px] text-emerald-300 bg-emerald-500/15 px-3 py-1 rounded-full border border-emerald-400/20 backdrop-blur-md">
-                            {{ package.duration_days }} Hari / {{ package.duration_nights }} Malam
+                        <span
+                            class="rounded-full border border-emerald-400/20 bg-emerald-500/15 px-3 py-1 text-[11px] font-bold tracking-[3px] text-emerald-300 uppercase backdrop-blur-md"
+                        >
+                            {{ package.duration_days }} Day /
+                            {{ package.duration_nights }} Night
                         </span>
                     </div>
-                    <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
-                        {{ package.title }}
+                    <h1
+                        class="text-3xl leading-[1.1] font-extrabold tracking-tight text-white md:text-4xl"
+                    >
+                        {{ package.name_package }}
                     </h1>
                 </div>
-                <div class="h-24 bg-gradient-to-t from-slate-950 to-transparent"></div>
+                <div
+                    class="h-24 bg-gradient-to-t from-slate-950 to-transparent"
+                ></div>
             </div>
         </div>
 
         <!-- Main Content -->
-        <div class="max-w-6xl mx-auto px-6 -mt-6 relative z-20 grid grid-cols-1 lg:grid-cols-3 gap-8 pb-24">
+        <div
+            class="relative z-20 mx-auto -mt-6 grid max-w-6xl grid-cols-1 gap-8 px-6 pb-24 lg:grid-cols-3"
+        >
             <!-- Left Column -->
-            <div class="lg:col-span-2 space-y-8">
+            <div class="space-y-8 lg:col-span-3">
                 <!-- Highlight Stats -->
-                <div class="grid grid-cols-3 gap-4 p-5 rounded-2xl bg-slate-900/80 border border-slate-800/80 backdrop-blur-sm">
+                <div
+                    class="mx-auto max-w-5xl w-full grid grid-cols-2 gap-6 rounded-2xl border border-slate-800/80 bg-slate-900/80 p-6 backdrop-blur-sm"
+                >
                     <div class="flex items-center gap-3">
-                        <div class="p-2.5 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                            <Clock class="w-5 h-5" />
+                        <div
+                            class="rounded-xl border border-violet-500/20 bg-violet-500/10 p-2.5 text-violet-400"
+                        >
+                            <Clock class="h-5 w-5" />
                         </div>
                         <div>
-                            <p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Durasi</p>
-                            <p class="text-sm font-bold text-slate-100">{{ package.duration_days }}H {{ package.duration_nights }}M</p>
+                            <p
+                                class="text-[10px] font-semibold tracking-wider text-slate-500 uppercase"
+                            >
+                                Duration
+                            </p>
+                            <p class="text-sm font-bold text-slate-100 leading-none">
+                                {{ package.duration_days }} Day /
+                                {{ package.duration_nights }} Night
+                            </p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3 pl-4 border-l border-slate-800/80">
-                        <div class="p-2.5 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                            <Users class="w-5 h-5" />
+                    <div
+                        class="flex items-center gap-3 border-l border-slate-800/80 pl-4"
+                    >
+                        <div
+                            class="rounded-xl border border-violet-500/20 bg-violet-500/10 p-2.5 text-violet-400"
+                        >
+                            <MapPin class="h-5 w-5" />
                         </div>
                         <div>
-                            <p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Kapasitas</p>
-                            <p class="text-sm font-bold text-slate-100">Max {{ package.max_capacity }} Orang</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 pl-4 border-l border-slate-800/80">
-                        <div class="p-2.5 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20">
-                            <MapPin class="w-5 h-5" />
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Destinasi</p>
-                            <p class="text-sm font-bold text-slate-100 truncate">{{ package.location }}</p>
+                            <p
+                                class="text-[10px] font-semibold tracking-wider text-slate-500 uppercase"
+                            >
+                                Destination
+                            </p>
+                            <p
+                                class="truncate text-sm font-bold text-slate-100"
+                            >
+                                {{ package.location }}
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Ringkasan -->
-                <div class="space-y-3">
-                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                        <Sparkles class="w-4 h-4 text-violet-400" /> Ringkasan Paket
-                    </h3>
-                    <p class="text-slate-300/90 leading-relaxed text-[15px] whitespace-pre-line bg-slate-900/40 p-6 rounded-2xl border border-slate-800/50">
+                <div class="mx-auto max-w-5xl w-full space-y-4 text-start">
+                    <div class="flex items-start justify-start gap-2">
+                        <div class="h-8 w-8 rounded-xl bg-violet-500/10 flex items-center justify-center text-violet-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Package Summary</h3>
+                    </div>
+                    <p
+                        class="rounded-2xl border border-slate-800/50 bg-slate-900/40 p-8 text-[15px] leading-relaxed whitespace-pre-line text-slate-300/90 w-full"
+                    >
                         {{ package.short_description }}
                     </p>
-                </div>
-
-                <!-- Deskripsi -->
-                <div v-if="package.description" class="space-y-3">
-                    <h3 class="text-lg font-bold text-white">Detail Perjalanan</h3>
-                    <div class="text-slate-300/90 leading-relaxed text-[15px] whitespace-pre-line bg-slate-900/40 p-6 rounded-2xl border border-slate-800/50">
-                        {{ package.description }}
-                    </div>
-                </div>
-
-                <!-- Fasilitas -->
-                <div class="space-y-5 pt-6 border-t border-slate-800/60">
-                    <h3 class="text-lg font-bold text-white">Fasilitas & Layanan</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-3">
-                            <h4 class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Termasuk</h4>
-                            <div v-if="includedServices.length > 0" class="space-y-2">
-                                <div
-                                    v-for="service in includedServices"
-                                    :key="service.id"
-                                    class="flex items-center gap-3 text-sm text-slate-200 bg-slate-900/50 p-3.5 rounded-xl border border-emerald-500/10"
-                                >
-                                    <CheckCircle2 class="w-4 h-4 text-emerald-400 shrink-0" />
-                                    <span>{{ service.name }}</span>
-                                </div>
-                            </div>
-                            <p v-else class="text-xs text-slate-500 italic py-3">Tidak ada rincian fasilitas.</p>
-                        </div>
-                        <div class="space-y-3">
-                            <h4 class="text-[11px] font-bold uppercase tracking-wider text-rose-400">Tidak Termasuk</h4>
-                            <div v-if="excludedServices.length > 0" class="space-y-2">
-                                <div
-                                    v-for="service in excludedServices"
-                                    :key="service.id"
-                                    class="flex items-center gap-3 text-sm text-slate-400 bg-slate-900/30 p-3.5 rounded-xl border border-rose-500/10"
-                                >
-                                    <XCircle class="w-4 h-4 text-rose-400 shrink-0" />
-                                    <span>{{ service.name }}</span>
-                                </div>
-                            </div>
-                            <p v-else class="text-xs text-slate-500 italic py-3">Tidak ada rincian fasilitas.</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

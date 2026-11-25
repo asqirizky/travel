@@ -43,5 +43,7 @@
     </head>
     <body class="font-sans antialiased">
         <x-inertia::app />
+
+        @sweetAlert
     </body>
 </html>

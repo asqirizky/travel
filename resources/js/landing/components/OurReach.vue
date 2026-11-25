@@ -1,317 +1,277 @@
 <template>
-  <section class="our-reach">
-    <div class="reach-bg"></div>
-    <div class="reach-content">
-      <div class="reach-header">
-        <span class="reach-badge">Our Reach</span>
-        <h3 class="reach-title">Most Visited Destinations</h3>
-        <p class="reach-desc">
-          These are the top destinations that travelers love the most. From ancient temples
-          to tropical paradises, each location offers a unique experience that keeps visitors
-          coming back year after year.
-        </p>
-        <div class="reach-total">
-          <span class="total-number">10.8M+</span>
-          <span class="total-label">Total Visitors</span>
-        </div>
-      </div>
+    <section class="our-reach">
+        <div class="reach-inner">
+            <div class="reach-stack" ref="reachList">
+                <article class="reach-item">
+                    <div class="reach-body">
+                        <span class="body-label">Indonesia</span>
+                        <h3 class="body-title">
+                            A country of natural wonder and living culture
+                        </h3>
+                        <p class="body-text">
+                            Stretching across more than 17,000 islands,
+                            Indonesia holds an extraordinary range of landscapes
+                            — volcanic peaks, misty highlands, rainforests, and
+                            coral seas. Alongside that beauty live hundreds of
+                            cultures, each with its own language, rituals,
+                            music, and craft, making every region feel like a
+                            different world.
+                        </p>
+                    </div>
 
-      <div class="cards-grid">
-        <div
-          v-for="(item, index) in stats"
-          :key="index"
-          class="dest-card"
-          :class="{ 'dest-card-active': activeCard === index }"
-          @mouseenter="activeCard = index"
-          @mouseleave="activeCard = null"
-        >
-          <div class="dest-card-image">
-            <img :src="item.image" :alt="item.name" />
-            <div class="dest-card-overlay"></div>
-            <div class="dest-card-visitors">
-              <span class="dest-card-number">{{ item.visitors }}</span>
-              <span class="dest-card-label">visitors</span>
+                    <figure class="reach-media">
+                        <img
+                            src="/landing_hero/ijen.jpg"
+                            alt="The turquoise crater lake of Ijen"
+                            loading="lazy"
+                        />
+                        <figcaption class="reach-caption">
+                            Ijen, Jawa Timur
+                        </figcaption>
+                    </figure>
+                </article>
+
+                <article class="reach-item is-reversed">
+                    <div class="reach-body">
+                        <span class="body-label">Why this website</span>
+                        <h3 class="body-title">
+                            Made to bring Indonesia closer to you
+                        </h3>
+                        <p class="body-text">
+                            This website was built to promote the tourist
+                            destinations spread across the archipelago — from
+                            celebrated landmarks to quiet places few travelers
+                            know. Through curated guides and travel packages, we
+                            hope to help more people discover, plan, and
+                            experience the beauty of Indonesia.
+                        </p>
+                    </div>
+
+                    <figure class="reach-media">
+                        <img
+                            src="/landing_hero/borobudur.jpg"
+                            alt="Borobudur temple at sunrise"
+                            loading="lazy"
+                        />
+                        <figcaption class="reach-caption">
+                            Borobudur, Jawa Tengah
+                        </figcaption>
+                    </figure>
+                </article>
             </div>
-          </div>
-          <div class="dest-card-body">
-            <div class="dest-card-info">
-              <div class="dest-card-name">{{ item.name }}</div>
-              <div class="dest-card-location">{{ item.location }}</div>
-            </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue';
 
-const activeCard = ref(null)
+const reachList = ref<HTMLElement | null>(null);
+let observer: IntersectionObserver | undefined;
 
-const stats = [
-  {
-    name: 'Borobudur',
-    location: 'Magelang, Jawa Tengah',
-    visitors: '2.5M',
-    image: 'https://images.unsplash.com/photo-1615104168825-3d6391ccc228?q=80&w=870'
-  },
-  {
-    name: 'Bali',
-    location: 'Kepulauan Sunda Kecil',
-    visitors: '6.3M',
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=870'
-  },
-  {
-    name: 'Bromo',
-    location: 'Probolinggo, Jawa Timur',
-    visitors: '1.2M',
-    image: 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?q=80&w=870'
-  },
-  {
-    name: 'Raja Ampat',
-    location: 'Papua Barat',
-    visitors: '850K',
-    image: 'https://images.unsplash.com/photo-1590461478695-34e06f7af549?q=80&w=870'
-  }
-]
+onMounted(() => {
+    const items = reachList.value?.querySelectorAll<HTMLElement>('.reach-item');
+
+    if (!items?.length) {
+        return;
+    }
+
+    observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer?.unobserve(entry.target);
+                }
+            });
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -60px 0px' },
+    );
+
+    items.forEach((item) => observer?.observe(item));
+});
+
+onUnmounted(() => {
+    observer?.disconnect();
+});
 </script>
 
 <style scoped>
 .our-reach {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 100px 20px;
+    position: relative;
+    overflow: hidden;
+    padding: 130px 20px 160px;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 45%, #f8fafc 100%);
 }
 
-.reach-bg {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, #0d0d12 0%, #111118 50%, #0d0d12 100%);
-  z-index: 0;
+.our-reach::before {
+    content: '';
+    position: absolute;
+    top: -180px;
+    right: -160px;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(59, 130, 246, 0.09) 0%,
+        transparent 70%
+    );
+    filter: blur(20px);
+    pointer-events: none;
 }
 
-.reach-content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-  gap: 60px;
+.reach-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1120px;
+    margin: 0 auto;
 }
 
-.reach-header {
-  text-align: center;
-  max-width: 640px;
-  margin: 0 auto;
+.reach-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 110px;
 }
 
-.reach-badge {
-  display: inline-block;
-  font-size: 0.78em;
-  color: #a78bfa;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  font-weight: 500;
-  margin-bottom: 14px;
-  background: rgba(167, 139, 250, 0.1);
-  padding: 5px 14px;
-  border-radius: 20px;
-  border: 1px solid rgba(167, 139, 250, 0.15);
+.reach-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: 72px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s ease;
 }
 
-.reach-title {
-  font-size: 2.4em;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.2;
-  margin-bottom: 18px;
-  letter-spacing: -1px;
+.reach-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-.reach-desc {
-  font-size: 0.95em;
-  color: #a1a1aa;
-  line-height: 1.8;
-  margin-bottom: 28px;
+.reach-item.is-reversed {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
 }
 
-.reach-total {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  background: rgba(167, 139, 250, 0.06);
-  border: 1px solid rgba(167, 139, 250, 0.12);
-  border-radius: 14px;
-  padding: 14px 24px;
+.reach-item.is-reversed .reach-media {
+    order: -1;
 }
 
-.total-number {
-  font-size: 1.8em;
-  font-weight: 700;
-  color: #a78bfa;
-  line-height: 1;
+.reach-media {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 16 / 11;
+    border-radius: 22px;
+    overflow: hidden;
+    background: #e2e8f0;
+    box-shadow:
+        0 24px 60px rgba(15, 23, 42, 0.12),
+        0 2px 8px rgba(15, 23, 42, 0.05);
 }
 
-.total-label {
-  font-size: 0.85em;
-  color: #71717a;
-  font-weight: 400;
+.reach-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+.reach-item:hover .reach-media img {
+    transform: scale(1.05);
 }
 
-.dest-card {
-  background: linear-gradient(145deg, rgba(30, 30, 35, 0.9), rgba(22, 22, 28, 0.95));
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 18px;
-  overflow: hidden;
-  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-  cursor: pointer;
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+.reach-caption {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    padding: 7px 15px;
+    border-radius: 100px;
+    font-size: 0.7em;
+    letter-spacing: 0.4px;
+    color: #334155;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.55);
 }
 
-.dest-card-active {
-  border-color: rgba(167, 139, 250, 0.3) !important;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba(167, 139, 250, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
-  transform: translateY(-6px);
+.reach-body {
+    max-width: 440px;
 }
 
-.dest-card-image {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
+.reach-item:not(.is-reversed) .reach-body {
+    padding-right: 12px;
 }
 
-.dest-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
+.reach-item.is-reversed .reach-body {
+    padding-left: 12px;
 }
 
-.dest-card:hover .dest-card-image img {
-  transform: scale(1.1);
+.body-label {
+    display: block;
+    font-size: 0.68em;
+    font-weight: 500;
+    letter-spacing: 2.8px;
+    text-transform: uppercase;
+    color: #2563eb;
+    margin-bottom: 16px;
 }
 
-.dest-card-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 60%);
+.body-title {
+    font-size: 2em;
+    font-weight: 600;
+    letter-spacing: -0.9px;
+    line-height: 1.2;
+    color: #0f172a;
+    margin-bottom: 18px;
 }
 
-.dest-card-visitors {
-  position: absolute;
-  bottom: 12px;
-  right: 14px;
-  text-align: right;
-}
-
-.dest-card-number {
-  display: block;
-  font-size: 1.2em;
-  font-weight: 700;
-  background: linear-gradient(135deg, #a78bfa, #c4b5fd);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1;
-  margin-bottom: 2px;
-}
-
-.dest-card-label {
-  font-size: 0.6em;
-  color: #a1a1aa;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-}
-
-.dest-card-body {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 18px;
-}
-
-.dest-card-icon {
-  font-size: 1.4em;
-  flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(167, 139, 250, 0.12), rgba(167, 139, 250, 0.04));
-  border: 1px solid rgba(167, 139, 250, 0.1);
-  border-radius: 12px;
-}
-
-.dest-card-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.dest-card-name {
-  font-size: 0.95em;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 3px;
-  letter-spacing: 0.3px;
-}
-
-.dest-card-location {
-  font-size: 0.75em;
-  color: #63636e;
-  letter-spacing: 0.2px;
-}
-
-@media (max-width: 1024px) {
-  .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.body-text {
+    font-size: 0.93em;
+    line-height: 1.95;
+    color: #64748b;
 }
 
 @media (max-width: 900px) {
-  .our-reach {
-    padding: 80px 16px;
-  }
+    .our-reach {
+        padding: 90px 16px 110px;
+    }
 
-  .reach-title {
-    font-size: 2em;
-  }
+    .reach-stack {
+        gap: 72px;
+    }
 
-  .reach-content {
-    gap: 40px;
-  }
+    .reach-item,
+    .reach-item.is-reversed {
+        grid-template-columns: 1fr;
+        gap: 26px;
+    }
+
+    .reach-item.is-reversed .reach-media {
+        order: 0;
+    }
+
+    .reach-body,
+    .reach-item:not(.is-reversed) .reach-body,
+    .reach-item.is-reversed .reach-body {
+        max-width: none;
+        padding: 0 4px;
+    }
 }
 
 @media (max-width: 600px) {
-  .cards-grid {
-    grid-template-columns: 1fr;
-    max-width: 400px;
-    margin: 0 auto;
-  }
+    .body-title {
+        font-size: 1.6em;
+    }
 
-  .reach-title {
-    font-size: 1.6em;
-  }
+    .body-text {
+        font-size: 0.88em;
+    }
+
+    .reach-media {
+        border-radius: 16px;
+    }
 }
 </style>

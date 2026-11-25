@@ -62,6 +62,7 @@
   background: #0d0d12;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding: 80px 20px 0;
+  color: #f1f5f9;
 }
 
 .container {
@@ -92,11 +93,11 @@
 }
 
 .logo span {
-  color: #a78bfa;
+  color: #3b82f6;
 }
 
 .tagline {
-  color: #a1a1aa;
+  color: #94a3b8;
   font-size: 0.9em;
   line-height: 1.7;
   max-width: 280px;
@@ -115,13 +116,13 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  color: #a1a1aa;
+  color: #94a3b8;
   font-size: 0.88em;
   line-height: 1.5;
 }
 
 .col ul li svg {
-  color: #a78bfa;
+  color: #3b82f6;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -140,16 +141,16 @@
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #a1a1aa;
+  color: #94a3b8;
   transition: all 0.3s ease;
 }
 
 .social a:hover {
-  background: #a78bfa;
-  border-color: #a78bfa;
+  background: #3b82f6;
+  border-color: #3b82f6;
   color: #ffffff;
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(167, 139, 250, 0.3);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
 }
 
 .bottom {
@@ -160,7 +161,7 @@
 }
 
 .bottom p {
-  color: #71717a;
+  color: #94a3b8;
   font-size: 0.82em;
 }
 
