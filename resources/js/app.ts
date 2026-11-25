@@ -11,6 +11,7 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
+    serverHead: true,
     layout: (name) => {
         switch (true) {
             case name === 'Welcome':

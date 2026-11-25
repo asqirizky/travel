@@ -2,11 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Actions\Seo\ResolveSeoMetadata;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
+    public function __construct(private readonly ResolveSeoMetadata $seoMetadata) {}
+
     /**
      * The root template that's loaded on the first page visit.
      *
@@ -40,6 +43,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'head' => fn () => $this->seoMetadata->headElements($request),
             'auth' => [
                 'user' => $user,
             ],

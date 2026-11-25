@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { ArrowLeft, MapPin } from '@lucide/vue';
 import { computed } from 'vue';
 import type { Destination, DestinationSection } from '@/types';
@@ -21,8 +21,6 @@ const whatsappUrl = computed(() => {
 </script>
 
 <template>
-    <Head :title="`${destination.name} - Destinasi`" />
-
     <article class="destination-page">
         <div class="hero">
             <img :src="heroImage" :alt="destination.name" class="hero-img" />

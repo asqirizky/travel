@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import {
     ArrowRight,
     BedDouble,
@@ -126,8 +126,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <Head title="Service - Ijen Bromo Travel" />
-
     <section ref="pageRef" class="svc">
         <div class="svc-hero">
             <div ref="parallaxBg" class="svc-hero-bg"></div>

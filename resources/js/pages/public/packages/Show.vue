@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 import { ArrowLeft, MapPin, Clock } from '@lucide/vue';
+import { ref } from 'vue';
 
 interface Package {
     id: number;
@@ -50,8 +50,6 @@ Mohon informasi ketersediaan slot dan langkah pembayaran selanjutnya. Terima kas
 </script>
 
 <template>
-    <Head :title="`${package.name_package} - Detail Paket`" />
-
     <div class="min-h-screen bg-slate-950 text-slate-100">
         <!-- Hero Banner Full Width -->
         <div class="relative h-[80vh] min-h-[560px] w-full overflow-hidden">

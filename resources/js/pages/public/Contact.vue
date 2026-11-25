@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
 import {
     ArrowRight,
     CalendarDays,
@@ -47,8 +46,6 @@ function submitForm(): void {
 </script>
 
 <template>
-    <Head title="Start Planning - Ijen Bromo Travel" />
-
     <section class="plan-page">
         <div class="plan-hero">
             <div class="plan-hero-bg"></div>

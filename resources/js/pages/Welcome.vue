@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
 import Destinations from '@/landing/components/Destinations.vue';
 import LandingHero from '@/landing/components/Landing.vue';
 import Packages from '@/landing/components/Packages.vue';
@@ -14,8 +13,6 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Indonesia Culture Trip" />
-
     <LandingHero />
     <Destinations :destinations="destinations" />
     <WhyTravelWithUs />
